@@ -2,14 +2,14 @@ import { useLocation } from "react-router-dom";
 import { getDesktopId } from "../../components";
 import { DesktopState } from "../../constants/types";
 import { Window } from "../Window";
-import "./desktop.sass";
+import classes from "./desktop.module.sass";
 
 export function Desktop(props: {
   desktop: DesktopState;
   dragElement: Function;
   desktopList: DesktopState[];
   setDesktopList: Function;
-  refDesktops: React.MutableRefObject<null>;
+  refDesktops: React.MutableRefObject<HTMLDivElement>;
 }) {
   const { desktop, dragElement, desktopList, setDesktopList, refDesktops } =
     props;
@@ -18,8 +18,8 @@ export function Desktop(props: {
 
   return (
     <div
-      className={`desktop ${
-        desktop.desktopId === getDesktopId(pathname) ? "" : "invisible"
+      className={`${classes.desktop} ${
+        desktop.desktopId === getDesktopId(pathname) ? "" : classes.invisible
       }`}
     >
       {desktop.windows.map((item) => {

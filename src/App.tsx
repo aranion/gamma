@@ -1,10 +1,10 @@
 import { AppRouter } from "./router";
-import "./App.sass";
+import classes from "./App.module.sass";
 import { Navigation } from "./components";
 
 function App() {
   return (
-    <div className="App">
+    <div className={classes.App}>
       <Navigation />
       <AppRouter />
     </div>

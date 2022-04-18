@@ -6,8 +6,8 @@ export interface Position {
 }
 export interface WindowItem {
   windowId: string;
-  ref: React.MutableRefObject<null>;
-  refMoveElem: React.MutableRefObject<null>;
+  ref: React.MutableRefObject<HTMLDivElement>;
+  refMoveElem: React.MutableRefObject<HTMLDivElement>;
   zIndex: number;
   width: number;
   height: number;
@@ -28,3 +28,5 @@ export enum RouteNames {
   DESKTOPS = "/desktops/",
   NOT_FOUND = "/*",
 }
+
+export type ActionDesktop = number | string | boolean | any 
