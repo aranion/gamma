@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 import { Desktop } from "../../components";
 import { DesktopState, Direction, WindowItem } from "../../constants/types";
-import "./desktop.sass";
+import classes from "./desktop.module.sass";
 
 export function Desktops() {
   const initialState: DesktopState[] = [
@@ -10,24 +10,24 @@ export function Desktops() {
       windows: [
         {
           windowId: "window1",
-          ref: useRef(null),
+          ref: useRef({} as HTMLDivElement),
           zIndex: 1,
           height: 175,
           width: 150,
           top: 0,
           left: 0,
-          refMoveElem: useRef(null),
+          refMoveElem: useRef({} as HTMLDivElement),
           position: { pos1: 0, pos2: 0, pos3: 0, pos4: 0 },
         },
         {
           windowId: "window3",
-          ref: useRef(null),
+          ref: useRef({} as HTMLDivElement),
           zIndex: 1,
           height: 175,
           width: 150,
           top: 0,
           left: 0,
-          refMoveElem: useRef(null),
+          refMoveElem: useRef({} as HTMLDivElement),
           position: { pos1: 0, pos2: 0, pos3: 0, pos4: 0 },
         },
       ],
@@ -37,13 +37,13 @@ export function Desktops() {
       windows: [
         {
           windowId: "window2",
-          ref: useRef(null),
+          ref: useRef({} as HTMLDivElement),
           zIndex: 1,
           height: 175,
           width: 150,
           top: 0,
           left: 0,
-          refMoveElem: useRef(null),
+          refMoveElem: useRef({} as HTMLDivElement),
           position: { pos1: 0, pos2: 0, pos3: 0, pos4: 0 },
         },
       ],
@@ -55,28 +55,29 @@ export function Desktops() {
   //   (state) => state.desktopList
   // ) as DesktopState[];
 
-  const refDesktops = useRef(null);
+  const refDesktops = useRef({} as HTMLDivElement);
 
   useEffect(() => {
     desktopList.forEach((el) =>
       el.windows.forEach((item) => {
         dragElement(item.ref.current, item.refMoveElem, item);
-        setSizeBlock(item);
+        initialBlock(item);
       })
     );
   }, [desktopList]);
 
-  function setSizeBlock(item: WindowItem) {
-    const elmStyle = (item.ref.current as any).style;
+  function initialBlock(item: WindowItem) {
+    const elmStyle = item.ref.current.style;
     elmStyle.width = item.width + "px";
     elmStyle.height = item.height + "px";
     elmStyle.top = item.top + "px";
     elmStyle.left = item.left + "px";
+    elmStyle.zIndex = String(item.zIndex);
   }
 
   function dragElement(
-    elmnt: any,
-    refMoveElem: React.MutableRefObject<null>,
+    elmnt: HTMLDivElement,
+    refMoveElem: React.MutableRefObject<HTMLDivElement>,
     windowItem: WindowItem
   ) {
     if (refMoveElem.current) {
@@ -94,22 +95,20 @@ export function Desktops() {
     }
 
     function checkMaxBorder(value: number, direction: Direction): number {
+      const maxWidth = refDesktops.current.clientWidth - windowItem.width;
+      const masHeight = refDesktops.current.clientHeight - windowItem.height;
+
       if (value < 0) {
         return 0;
-      } else if (
-        direction === "horizontally" &&
-        value > (refDesktops.current as any).clientWidth - windowItem.width
-      ) {
-        return (refDesktops.current as any).clientWidth - windowItem.width;
-      } else if (
-        direction === "vertically" &&
-        value > (refDesktops.current as any).clientHeight - windowItem.height
-      ) {
-        return (refDesktops.current as any).clientHeight - windowItem.height;
+      } else if (direction === Direction.horizontally && value > maxWidth) {
+        return maxWidth;
+      } else if (direction === Direction.vertically && value > masHeight) {
+        return masHeight;
       }
 
       return value;
     }
+
     function elementDrag(e: MouseEvent) {
       e = e || window.event;
       e.preventDefault();
@@ -127,11 +126,26 @@ export function Desktops() {
       );
       elmnt.style.top = windowItem.top + "px";
       elmnt.style.left = windowItem.left + "px";
+
+      selectWindow(windowItem.windowId);
+    }
+
+    function selectWindow(windowId: string): void {
+      desktopList.forEach((el) => {
+        el.windows.forEach((item) => {
+          if (item.windowId === windowId) item.zIndex = 1;
+          else item.zIndex = 0;
+        });
+      });
+      setDesktopList([...desktopList]);
     }
   }
 
   return (
-    <div className="desktops no-select" ref={refDesktops}>
+    <div
+      className={`${classes.desktops} ${classes["no-select"]}`}
+      ref={refDesktops}
+    >
       {desktopList.map((el) => (
         <Desktop
           key={el.desktopId}

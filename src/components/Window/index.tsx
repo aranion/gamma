@@ -1,6 +1,6 @@
 import { useEffect, useRef } from "react";
 import { DesktopState, WindowItem } from "../../constants/types";
-import "./window.sass";
+import classes from "./window.module.sass";
 
 interface Props {
   windowItem: WindowItem;
@@ -8,7 +8,7 @@ interface Props {
   desktopList: DesktopState[];
   desktopId: number;
   setDesktopList: Function;
-  refDesktops: React.MutableRefObject<null>;
+  refDesktops: React.MutableRefObject<HTMLDivElement>;
 }
 
 export function Window(props: Props) {
@@ -21,34 +21,30 @@ export function Window(props: Props) {
     refDesktops,
   } = props;
 
-  const refBlockResize = useRef(null);
+  const refBlockResize = useRef({} as HTMLDivElement);
 
   let ie: number = 0,
     op: number = 0,
     ff: number = 0,
-    block: any,
-    block_r: any,
+    block: HTMLDivElement,
+    block_r: HTMLDivElement,
     delta_w: number = 0,
-    delta_h: number = 0;
-
-  let browser = navigator.userAgent;
+    delta_h: number = 0,
+    browser = navigator.userAgent;
 
   useEffect(() => {
     if (browser.indexOf("Opera") !== -1) op = 1;
-    else {
-      if (browser.indexOf("MSIE") !== -1) ie = 1;
-      else {
-        if (browser.indexOf("Firefox") !== -1) ff = 1;
-      }
-    }
+    else if (browser.indexOf("MSIE") !== -1) ie = 1;
+    else if (browser.indexOf("Firefox") !== -1) ff = 1;
+
     block = windowItem.ref.current;
     block_r = refBlockResize.current;
     document.onmouseup = clearXY;
     block_r.onmousedown = saveWH;
   });
 
-  function getXY(obj_event: any): number[] {
-    let x, y;
+  function getXY(obj_event: MouseEvent): number[] {
+    let x: number, y: number;
 
     if (obj_event) {
       x = obj_event.pageX;
@@ -72,20 +68,22 @@ export function Window(props: Props) {
     delta_h = h_block - point[1];
 
     document.onmousemove = resizeBlock;
+
     if (op || ff) document.addEventListener("onmousemove", resizeBlock, false);
+
     return false;
   }
 
   function clientWidth(): number {
-    return (refDesktops.current as any).clientWidth === 0
+    return refDesktops.current.clientWidth === 0
       ? document.body.clientWidth
-      : (refDesktops.current as any).clientWidth;
+      : refDesktops.current.clientWidth;
   }
 
   function clientHeight(): number {
-    return (refDesktops.current as any).clientHeight === 0
+    return refDesktops.current.clientHeight === 0
       ? document.body.clientHeight
-      : (refDesktops.current as any).clientHeight;
+      : refDesktops.current.clientHeight;
   }
 
   function clearXY(): void {
@@ -94,10 +92,12 @@ export function Window(props: Props) {
 
   function resizeBlock(obj_event: any): void {
     let point = getXY(obj_event);
+
     windowItem.width = delta_w + point[0];
     windowItem.height = delta_h + point[1];
     block.style.width = windowItem.width + "px";
     block.style.height = windowItem.height + "px";
+
     if (block.offsetLeft + block.clientWidth > clientWidth())
       block.style.width = clientWidth() - block.offsetLeft + "px";
     if (block.offsetTop + block.clientHeight > clientHeight())
@@ -120,17 +120,17 @@ export function Window(props: Props) {
   }
 
   return (
-    <div className="window" ref={windowItem.ref}>
+    <div className={classes.window} ref={windowItem.ref}>
       <div
         ref={windowItem.refMoveElem}
-        className="window__header"
+        className={classes["window__header"]}
         onChange={(e) => dragElement(e, windowItem.refMoveElem, windowItem)}
       >
         Нажмите здесь, чтобы переместить
       </div>
       <p>{windowItem.windowId}</p>
       <button onClick={moveWindowDesktop}>Переместить</button>
-      <div className="block_resize" ref={refBlockResize}></div>
+      <div className={classes["block_resize"]} ref={refBlockResize}></div>
     </div>
   );
 }
