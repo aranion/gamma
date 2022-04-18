@@ -60,7 +60,7 @@ export function Desktops() {
   useEffect(() => {
     desktopList.forEach((el) =>
       el.windows.forEach((item) => {
-        dragElement(item.ref.current, item.refMoveElem, item);
+        dragElement(item.ref.current, item.refMoveElem.current, item);
         initialBlock(item);
       })
     );
@@ -77,11 +77,11 @@ export function Desktops() {
 
   function dragElement(
     elmnt: HTMLDivElement,
-    refMoveElem: React.MutableRefObject<HTMLDivElement>,
+    refMoveElem: HTMLDivElement,
     windowItem: WindowItem
   ) {
-    if (refMoveElem.current) {
-      (refMoveElem.current as HTMLElement).onmousedown = dragMouseDown;
+    if (refMoveElem) {
+      refMoveElem.onmousedown = dragMouseDown;
     } else {
       elmnt.onmousedown = dragMouseDown;
     }
