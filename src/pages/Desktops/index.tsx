@@ -22,11 +22,11 @@ export function Desktops() {
         {
           windowId: "window3",
           ref: useRef({} as HTMLDivElement),
-          zIndex: 1,
+          zIndex: 3,
           height: 175,
           width: 150,
-          top: 0,
-          left: 0,
+          top: 100,
+          left: 100,
           refMoveElem: useRef({} as HTMLDivElement),
           position: { pos1: 0, pos2: 0, pos3: 0, pos4: 0 },
         },
@@ -38,7 +38,7 @@ export function Desktops() {
         {
           windowId: "window2",
           ref: useRef({} as HTMLDivElement),
-          zIndex: 1,
+          zIndex: 2,
           height: 175,
           width: 150,
           top: 0,
@@ -51,11 +51,13 @@ export function Desktops() {
   ];
 
   const [desktopList, setDesktopList] = useState(initialState);
+
   // const desktopList = useSelector<{ desktopList: DesktopState[] }>(
   //   (state) => state.desktopList
   // ) as DesktopState[];
 
   const refDesktops = useRef({} as HTMLDivElement);
+  const selectWIndows = useRef([] as Array<string>).current;
 
   useEffect(() => {
     desktopList.forEach((el) =>
@@ -130,13 +132,31 @@ export function Desktops() {
       selectWindow(windowItem.windowId);
     }
 
-    function selectWindow(windowId: string): void {
+    function selectWindow(selectWindowId: string): void {
       desktopList.forEach((el) => {
         el.windows.forEach((item) => {
-          if (item.windowId === windowId) item.zIndex = 1;
-          else item.zIndex = 0;
+          if (selectWIndows.indexOf(item.windowId) === -1) {
+            selectWIndows.push(item.windowId);
+          }
         });
       });
+
+      desktopList.forEach((el) => {
+        el.windows.forEach((item) => {
+          if (item.windowId === selectWindowId) {
+            selectWIndows.splice(
+              selectWIndows.length,
+              1,
+              selectWIndows.splice(selectWIndows.indexOf(selectWindowId), 1)[0]
+            );
+
+            item.zIndex = selectWIndows.indexOf(item.windowId);
+          }
+          if (selectWIndows.indexOf(item.windowId) !== -1)
+            item.zIndex = selectWIndows.indexOf(item.windowId);
+        });
+      });
+
       setDesktopList([...desktopList]);
     }
   }
