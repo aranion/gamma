@@ -1,6 +1,6 @@
-@import '../../constants/_vars.sass';
+@import '../../constants/_vars.sass'
 
-.window 
+.window
   position: absolute
   background-color: #f1f1f1
   text-align: center
@@ -9,22 +9,22 @@
   min-width: 150px
   width: 150px
   height: 175px
-  box-shadow: 0px 0px 10px $buttonHover  
-  &__header 
+  box-shadow: 0px 0px 10px $buttonHover
+  &__header
     padding: 5px 0
     cursor: move
     z-index: 10
     background-color: $buttonHover
     color: white
     opacity: 0.2
-    &:hover 
+    &:hover
       opacity: 1
-      transition: opacity 0.5s 
+      transition: opacity 0.5s
     &:not(:hover)
       transition: opacity 0.5s
 
 .block
-  &_resize 
+  &_resize
     bottom: 0
     cursor: se-resize
     margin-top: 9px
@@ -33,4 +33,3 @@
     border: 5px solid transparent
     border-right: 5px solid black
     border-bottom: 5px solid black
-    

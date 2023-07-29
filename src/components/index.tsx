@@ -1,3 +1,3 @@
-export * from "./Navigation";
-export * from "./Desktop";
-export * from "./Window";
+export * from './Navigation'
+export * from './Desktop'
+export * from './Window'
