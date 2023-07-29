@@ -1,6 +1,6 @@
-import { AppRouter } from "./router";
-import classes from "./App.module.sass";
-import { Navigation } from "./components";
+import { AppRouter } from './router'
+import classes from './App.module.sass'
+import { Navigation } from './components'
 
 function App() {
   return (
@@ -8,7 +8,7 @@ function App() {
       <Navigation />
       <AppRouter />
     </div>
-  );
+  )
 }
 
-export default App;
+export default App

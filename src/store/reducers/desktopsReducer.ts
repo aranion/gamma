@@ -1,11 +1,11 @@
-import { ActionDesktop, DesktopState } from "../../constants/types";
+import { ActionDesktop, DesktopState } from '../../constants/types'
 
 export const initialState: DesktopState[] = [
   {
     desktopId: 1,
     windows: [
       {
-        windowId: "window1",
+        windowId: 'window1',
         ref: {} as React.MutableRefObject<HTMLDivElement>,
         zIndex: 0,
         height: 175,
@@ -16,7 +16,7 @@ export const initialState: DesktopState[] = [
         position: { pos1: 0, pos2: 0, pos3: 0, pos4: 0 },
       },
       {
-        windowId: "window3",
+        windowId: 'window3',
         ref: {} as React.MutableRefObject<HTMLDivElement>,
         zIndex: 0,
         height: 175,
@@ -32,7 +32,7 @@ export const initialState: DesktopState[] = [
     desktopId: 2,
     windows: [
       {
-        windowId: "window2",
+        windowId: 'window2',
         ref: {} as React.MutableRefObject<HTMLDivElement>,
         zIndex: 0,
         height: 175,
@@ -44,7 +44,7 @@ export const initialState: DesktopState[] = [
       },
     ],
   },
-];
+]
 
 export default function desktopsReducer(state = initialState, action: ActionDesktop) {
   switch (action.type) {
@@ -55,7 +55,7 @@ export default function desktopsReducer(state = initialState, action: ActionDesk
     //   }
     default:
       return {
-        ...state
+        ...state,
       }
   }
 }

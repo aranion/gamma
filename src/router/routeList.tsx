@@ -1,27 +1,27 @@
-import { ReactElement } from "react";
-import { RouteNames } from "../constants/types";
-import { Desktops, NotFound } from "../pages";
+import { ReactElement } from 'react'
+import { RouteNames } from '../constants/types'
+import { Desktops, NotFound } from '../pages'
 
 export interface IRoute {
-  title: string;
-  path: string;
-  component: ReactElement;
+  title: string
+  path: string
+  component: ReactElement
 }
 
 export const routeList: IRoute[] = [
   {
-    title: "Home",
+    title: 'Home',
     path: RouteNames.HOME,
     component: <Desktops />,
   },
   {
-    title: "Desktops",
-    path: RouteNames.DESKTOPS + ":id",
+    title: 'Desktops',
+    path: RouteNames.DESKTOPS + ':id',
     component: <Desktops />,
   },
   {
-    title: "NotFound",
+    title: 'NotFound',
     path: RouteNames.NOT_FOUND,
     component: <NotFound />,
   },
-];
+]
